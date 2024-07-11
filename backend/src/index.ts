@@ -1,19 +1,12 @@
 import express from "express";
-import { db } from "./db/prisma";
-
-// setup dot env for app
-const APP_PORT = 3000;
+import authRouter from "./apis/auth";
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get("/", async (req, res) => {
-  const allUsers = await db.user.findMany();
+app.use("/auth/user", authRouter);
 
-  res.json({
-    data: allUsers,
-  });
-});
-
-app.listen(APP_PORT, () => {
-  console.log("Server running at: http://localhost:%d", APP_PORT);
+app.listen(3000, () => {
+  console.log("Server running at: http://localhost:3000");
 });
